@@ -1,0 +1,17 @@
+<h2>Projects</h2>
+<ul>
+{{#each model as |project|}}
+    <li>
+        {{#each project.images as |image|}}
+        <img src={{image}} />
+        {{/each}}
+        <strong>{{project.name}}</strong> <small>({{project.date_completed}})</small><br>
+        <p>{{{project.description}}}</p>
+        <em>{{project.role}}</em><br>
+        
+    </li>
+{{/each}}
+</ul>
+
+
+{{outlet}}
