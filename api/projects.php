@@ -11,7 +11,7 @@ $stmt->execute();
 $projects = array();
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-foreach($results as $project) :
+foreach($results as &$project) :
 
     if(!$project['is_subproject']) {
 
@@ -19,7 +19,7 @@ foreach($results as $project) :
         $projects[$project['id']] = array(
             'id' => $project['id'],
             'type' => "project",
-            'attributes' => $project);
+            'attributes' => &$project);
 
 
         $projects[$project['id']]['attributes']['subprojects'] = array();
@@ -35,7 +35,8 @@ foreach($results as $project) :
 
         $dir = $_SERVER['DOCUMENT_ROOT'] . '/dist/assets/' . $project['images_folder'];
 
-        $projects[$project['id']]['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
+        $project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
+        $project['image'] = @array_filter($project['images'], 'project_mainimage_filter')[0] ?: $project['images'][2];
 
     } else {
 
@@ -63,6 +64,11 @@ function project_sort($a,$b) {
     return ($a['attributes']['sort'] < $b['attributes']['sort']) ? -1 : 1;
 }
 
+// Define the custom sort function
+function project_mainimage_filter($a) {
+    return strpos($a, 'main');
+}
+
 function getDirectoryTree($outerDir, $x) {
 
     $dirs = array_diff(scandir($outerDir), array('.', '..'));
@@ -74,7 +80,7 @@ function getDirectoryTree($outerDir, $x) {
         } else {
             if ($x ? preg_match('/' . $x .'$/i', $d) : 1) {
                 $outerDir = str_replace($_SERVER['DOCUMENT_ROOT'], '', $outerDir);
-                $dir_array[] = $outerDir . '/' . preg_replace('/\/dist/', '', $d);
+                $dir_array[] = preg_replace('/\/dist/', '', $outerDir ). '/' . $d;
             }
         }
     }
