@@ -1,0 +1,23 @@
+<article class="col-md-4 col-sm-6">
+
+    <div class="project-card">
+
+        <div class="image-container">
+            <img src={{project.image}} alt={{project.name}} />
+        </div>
+
+        <div class="title">
+            <h4>{{project.name}}
+            {{#if project.date_completed}}
+                <small>[{{project.date_completed}}]</small>
+            {{/if}}
+            </h4> 
+        </div>
+        <div class="description">
+            <em>{{project.role}}</em>
+            <p>{{{project.description}}}</p>
+        </div>
+
+    </div>
+    
+</article>

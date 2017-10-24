@@ -1,9 +1,15 @@
 Options +FollowSymLinks -MultiViews
 
+#ProxyPass / http://klg-dev.local:4200/
+#ProxyPassReverse / http://klg-dev.local:4200/
+
 RewriteEngine on
 RewriteBase /
+
+RewriteRule (.*!api) http://klg-dev.local:4200/$1 [PT]
 
 # Capture api request routes and route them to named php pages
 RewriteRule ^api/([a-z]+)$ api/$1.php [PT]
 
+# Allow cross-domain for requests from 
 Header set Access-Control-Allow-Origin "*"

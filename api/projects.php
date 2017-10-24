@@ -36,7 +36,7 @@ foreach($results as &$project) :
         $dir = $_SERVER['DOCUMENT_ROOT'] . '/dist/assets/' . $project['images_folder'];
 
         $project['images'] = getDirectoryTree($dir,'(jpg|jpeg|png|gif)');
-        $project['image'] = @array_filter($project['images'], 'project_mainimage_filter')[0] ?: $project['images'][2];
+        $project['image'] = '/assets/' . $project['images_folder'] . DIRECTORY_SEPARATOR . 'main.jpg' ?: $project['images'][0];
 
     } else {
 
@@ -62,11 +62,6 @@ function project_sort($a,$b) {
         return 0;
     }
     return ($a['attributes']['sort'] < $b['attributes']['sort']) ? -1 : 1;
-}
-
-// Define the custom sort function
-function project_mainimage_filter($a) {
-    return strpos($a, 'main');
 }
 
 function getDirectoryTree($outerDir, $x) {

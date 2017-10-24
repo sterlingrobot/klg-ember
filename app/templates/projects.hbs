@@ -1,6 +1,8 @@
 <h2>Projects</h2>
-{{#each model as |project|}}
-    {{project-card project=project}}
-{{/each}}
+<div class="row">
+    {{#each model as |project|}}
+        {{project-card project=project}}
+    {{/each}}
+</div>
 
 {{outlet}}
